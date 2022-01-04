@@ -1,0 +1,79 @@
+paths:
+  
+  /send_email:
+    post:
+      tags:
+        - EMAIL
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: authorization
+          description: authorization token
+          default: 12345
+          required: true
+
+        - in: body # request body
+          name: send email to vendors or customers # name of request, can be any name
+          description: send email
+          required: true # can also be true depending on user preference
+          schema: # Schema definition
+            $ref: '#/definitions/sendMails'
+      responses: # server responses
+        200:
+          description: should return a email sent successfully
+
+  /send_sms:
+    post:
+      tags:
+        - SMS
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: x-access-token
+          description: access token
+          default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzIwODQxODB9.60qxpvDKlXV3x4-XDf2GRWgEkuSvL_XuCYPbn5jil-0
+          required: true
+
+        - in: body # request body
+          name: send sms to vendors or customers # name of request, can be any name
+          description: send sms
+          required: true # can also be true depending on user preference
+          schema: # Schema definition
+            $ref: '#/definitions/sendSms'
+      responses: # server responses
+        200:
+          description: should return a sms sent successfully
+
+
+definitions: # Schema definition for request body
+  sendMails:
+    type: object
+    properties:
+      email:
+        type: string
+        default: onuohamiriam44@gmail.com
+      subject:
+        type: string
+        default: EasyHomes vendor verification
+
+      message:
+        type: string
+        default: How are you
+
+
+  sendSms:
+    type: object
+    properties:
+      phoneNumber:
+        type: string
+        default: +2347068360382
+      
+      message:
+        type: string
+        default: I am good
+
+
+
+ 
