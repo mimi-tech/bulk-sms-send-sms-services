@@ -1,6 +1,6 @@
 paths:
   
-  /send_email:
+  /send-email:
     post:
       tags:
         - EMAIL
@@ -23,7 +23,7 @@ paths:
         200:
           description: should return a email sent successfully
 
-  /send_sms:
+  /send-sms:
     post:
       tags:
         - SMS

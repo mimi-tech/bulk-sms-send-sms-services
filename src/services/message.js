@@ -17,7 +17,7 @@ const sendMail = async (params) => {
 
       //Define the email options
   const mailOptions = {
-    from: `EasyHomes <${process.env.EMAIL_FROM}>`,
+    from: `Bulk sms <${process.env.EMAIL_FROM}>`,
     to: email,
     subject: subject,
     html: message,
@@ -97,23 +97,23 @@ await mailTransporter.sendMail(mailOptions)
               status: false,
               message: err,
           };
-      } else {
+      } 
           if(responseData.messages[0]['status'] === "0") {
-             console.log("message sent successfully");
+             
 
              return {
               status: true,
               message: "message sent successfully",
           };
   
-          } else {
+          } 
               
               return {
                 status: true,
                 message: `Message failed with error: ${responseData.messages[0]['error-text']}`,
             };
-          }
-      }
+          
+      
   })
 
 
@@ -123,7 +123,7 @@ await mailTransporter.sendMail(mailOptions)
     
 
   } catch(error){
-    console.log(error);
+ 
     return {
       status: false,
       message: constants.SERVER_ERROR('SENDING SMS'),

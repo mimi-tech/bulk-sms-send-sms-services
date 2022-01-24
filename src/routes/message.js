@@ -8,8 +8,8 @@ const routes = Router();
 
 
 
-routes.post('/send_email', validate(validator.sendMail), message.sendMail);
-routes.post('/send_sms',validate(validator.sendSms), message.sendSms);
+routes.post('/send-email', validate(validator.sendMail), message.sendMail);
+routes.post('/send-sms',validate(validator.sendSms), message.sendSms);
 
 
 module.exports = routes;
