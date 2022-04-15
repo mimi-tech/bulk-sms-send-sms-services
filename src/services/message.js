@@ -1,5 +1,9 @@
 const fs = require('fs');
 const Vonage = require('@vonage/server-sdk')
+const twilio = require('twilio');
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 
 const nodemailer = require('nodemailer');
 
@@ -59,7 +63,7 @@ await mailTransporter.sendMail(mailOptions)
 
 
   } catch (error) {
-    console.error(params)
+    console.error(error)
     console.log(error);
     return {
       status: false,
@@ -80,47 +84,59 @@ await mailTransporter.sendMail(mailOptions)
   
 
   try {
-
+    
     const {phoneNumber, message, from} = params;
 
-    const vonage = new Vonage({
-      apiKey: process.env.NEXMO_API_KEY,
-      apiSecret: process.env.NEXMO_API_SECRET,
-    })
-    
+    client.messages
+    .create({
+       body: message,
+       from: process.env.TWILIO_PHONE_NUMBER,
+       to: phoneNumber
+     }).then((message) => {
+     
+      return {
+        status: true,
+        message: `message ${message.status} successfully`,
+    };
+     }).catch((error)=>{
+      return {
+      status: false,
+      message: `${error.message}`,
+      }
+     })
+    //.then(message => console.log(message.sid));
 
 
 
-    vonage.message.sendSms(from, phoneNumber, message, (err, responseData) => {
-      if (err) {
-          return {
-              status: false,
-              message: err,
-          };
-      } 
-          if(responseData.messages[0]['status'] === "0") {
-             
+  //   const vonage = new Vonage({
+  //     apiKey: process.env.NEXMO_API_KEY,
+  //     apiSecret: process.env.NEXMO_API_SECRET,
+  //   })
 
-             return {
-              status: true,
-              message: "message sent successfully",
-          };
+  //   vonage.message.sendSms(from, phoneNumber, message, (err, responseData) => {
+  //     if (err) {
+  //         return {
+  //             status: false,
+  //             message: err,
+  //         };
+  //     } else {
+  //         if(responseData.messages[0]['status'] === "0") {
+  //            console.log("message sent successfully");
+
+  //            return {
+  //             status: true,
+  //             message: "message sent successfully",
+  //         };
   
-          } 
+  //         } else {
               
-              return {
-                status: true,
-                message: `Message failed with error: ${responseData.messages[0]['error-text']}`,
-            };
-          
-      
-  })
-
-
-
-
-    
-    
+  //             return {
+  //               status: true,
+  //               message: `Message failed with error: ${responseData.messages[0]['error-text']}`,
+  //           };
+  //         }
+  //     }
+  // })
 
   } catch(error){
  
@@ -135,3 +151,4 @@ module.exports = {
   sendMail,
   sendSms
 };
+

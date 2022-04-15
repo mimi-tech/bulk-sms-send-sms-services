@@ -4,7 +4,7 @@ module.exports = {
   sendSms: {
     phoneNumber: Joi.string().required(),
     message: Joi.string().required(),
-    from: Joi.string().required(),
+    from: Joi.string(),
   },
 
   sendMail: {
